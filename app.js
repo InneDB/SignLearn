@@ -1,16 +1,34 @@
-let images = [
-    "images/sign-hello.png",
-    "images/sign-goodbye.png",
-    "images/sign-please.png",
-    "images/sign-thankyou.png",
+// Define lessons with image, label, prediction index, and threshold
+let lessons = [
+    {
+        image: "images/sign-hello.png",
+        label: "Hello",
+        predictionIndex: 0,
+        threshold: 0.1
+    },
+    {
+        image: "images/sign-goodbye.png",
+        label: "Goodbye",
+        predictionIndex: 1,
+        threshold: 0.9
+    },
+    {
+        image: "images/sign-please.png",
+        label: "Please",
+        predictionIndex: 2,
+        threshold: 0.9
+    },
+    {
+        image: "images/sign-thankyou.png",
+        label: "Thank you",
+        predictionIndex: 3,
+        threshold: 0.9
+    }
 ];
 
-let labels = [
-    "Hello",
-    "Goodbye",
-    "Please",
-    "Thank you",
-];
+// Legacy arrays for backwards compatibility
+let images = lessons.map(lesson => lesson.image);
+let labels = lessons.map(lesson => lesson.label);
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
@@ -56,17 +74,21 @@ async function loop() {
 async function predict() {
     // predict can take in an image, video or canvas html element
     const prediction = await model.predict(webcam.canvas);
+    
+    // Get current lesson
+    const currentLesson = lessons[currentIndex];
+    
     for (let i = 0; i < maxPredictions; i++) {
         const classPrediction =
             prediction[i].className + ": " + prediction[i].probability.toFixed(2);
         console.log(classPrediction);
     }
 
-    // Check if current gesture prediction is greater than 0.6
+    // Check if current gesture prediction meets the lesson's threshold
     const continueBtn = document.querySelector('.continue-btn');
     
     // If threshold reached, keep border and button enabled until next lesson
-    if (prediction[currentIndex].probability >= 0.6) {
+    if (prediction[currentLesson.predictionIndex].probability >= currentLesson.threshold) {
         gestureDetected = true;
     }
     
@@ -84,21 +106,22 @@ async function predict() {
 
 // Update image and label based on current index
 function updateLessonContent() {
+    const currentLesson = lessons[currentIndex];
     const imageElement = document.querySelector('.camera img');
     const labelElement = document.querySelector('.camera h2');
     const title = document.querySelector('.context-container h3');
     
     if (imageElement) {
-        imageElement.src = images[currentIndex];
-        imageElement.alt = `image sign-${labels[currentIndex].toLowerCase()}`;
+        imageElement.src = currentLesson.image;
+        imageElement.alt = `image sign-${currentLesson.label.toLowerCase()}`;
     }
     
     if (labelElement) {
-        labelElement.textContent = labels[currentIndex];
+        labelElement.textContent = currentLesson.label;
     }
     
     if (title) {
-        title.textContent = `Learning... (${currentIndex + 1}/${labels.length})`;
+        title.textContent = `Learning... (${currentIndex + 1}/${lessons.length})`;
     }
     
     // Reset gesture detection for new lesson
@@ -127,11 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const continueBtn = document.querySelector('.continue-btn');
     continueBtn.addEventListener('click', () => {
         if (continueBtn.classList.contains('enabled')) {
-            if (currentIndex < labels.length - 1) {
+            if (currentIndex < lessons.length - 1) {
                 // Move to next image/label
                 currentIndex++;
                 updateLessonContent();
-                console.log(`Moved to lesson ${currentIndex + 1}: ${labels[currentIndex]}`);
+                console.log(`Moved to lesson ${currentIndex + 1}: ${lessons[currentIndex].label}`);
             } else {
                 // All lessons completed needs fixing 
                 console.log('All lessons completed!');
