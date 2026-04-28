@@ -66,7 +66,7 @@ async function predict() {
     const continueBtn = document.querySelector('.continue-btn');
     
     // If threshold reached, keep border and button enabled until next lesson
-    if (prediction[currentIndex].probability >= 0.2) {
+    if (prediction[currentIndex].probability >= 0.6) {
         gestureDetected = true;
     }
     
