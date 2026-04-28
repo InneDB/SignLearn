@@ -1,5 +1,5 @@
 // Define lessons with image, label, prediction index, and threshold
-let lessons = [
+let gestures = [
     {
         image: "images/sign-hello.png",
         label: "Hello",
@@ -27,8 +27,8 @@ let lessons = [
 ];
 
 // Legacy arrays for backwards compatibility
-let images = lessons.map(lesson => lesson.image);
-let labels = lessons.map(lesson => lesson.label);
+let images = gestures.map(lesson => lesson.image);
+let labels = gestures.map(lesson => lesson.label);
 
 // More API functions here:
 // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
@@ -76,7 +76,7 @@ async function predict() {
     const prediction = await model.predict(webcam.canvas);
     
     // Get current lesson
-    const currentLesson = lessons[currentIndex];
+    const currentLesson = gestures[currentIndex];
     
     for (let i = 0; i < maxPredictions; i++) {
         const classPrediction =
@@ -106,7 +106,7 @@ async function predict() {
 
 // Update image and label based on current index
 function updateLessonContent() {
-    const currentLesson = lessons[currentIndex];
+    const currentLesson = gestures[currentIndex];
     const imageElement = document.querySelector('.camera img');
     const labelElement = document.querySelector('.camera h2');
     const title = document.querySelector('.context-container h3');
@@ -121,7 +121,7 @@ function updateLessonContent() {
     }
     
     if (title) {
-        title.textContent = `Learning... (${currentIndex + 1}/${lessons.length})`;
+        title.textContent = `Learning... (${currentIndex + 1}/${gestures.length})`;
     }
     
     // Reset gesture detection for new lesson
@@ -150,11 +150,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const continueBtn = document.querySelector('.continue-btn');
     continueBtn.addEventListener('click', () => {
         if (continueBtn.classList.contains('enabled')) {
-            if (currentIndex < lessons.length - 1) {
+            if (currentIndex < gestures.length - 1) {
                 // Move to next image/label
                 currentIndex++;
                 updateLessonContent();
-                console.log(`Moved to lesson ${currentIndex + 1}: ${lessons[currentIndex].label}`);
+                console.log(`Moved to lesson ${currentIndex + 1}: ${gestures[currentIndex].label}`);
             } else {
                 // All lessons completed needs fixing 
                 console.log('All lessons completed!');
