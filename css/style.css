@@ -1,0 +1,179 @@
+* {
+    box-sizing: border-box;
+}
+html {
+    --colorDarkblue: #2B2676;
+    --colorCream: #FFFDF1;
+    --colorLavander: #AA9BF8;
+    --colorGreen: #C1C74C;
+    --colorOrange: #E98E3D;
+    --colorLightblue: #E5EAFE;
+}
+body {
+    font-family: "Jost", sans-serif;
+    background-color: var(--colorCream);
+    color: var(--colorDarkblue);
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+}
+
+.nav-info {
+    background-color: var(--colorLightblue);
+    padding: 2em 4em;
+}
+
+.nav-info img {
+    padding-bottom: 4em ;
+}
+
+.nav-info p {
+    font-size: 1em;
+    line-height: 1.6em;
+    padding-top:1em ;
+}
+
+.dashboard h1 {
+    font-size: 6em;
+    padding-left: 0.6em;
+    margin-bottom: 0.4em;
+}
+.lessons {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 2em;
+    padding: 4em;
+}
+
+.lessons article {
+    border-radius: 10px;
+    padding: 1em;
+    max-height: 160px;
+    position: relative;
+}
+
+.lessons article h2 {
+    color: var(--colorCream);
+    text-transform: uppercase;
+    letter-spacing: 5%;
+}
+.lessons article p {
+    color: var(--colorCream);
+}
+
+
+.lessons a {
+    text-decoration: none;
+}
+
+
+.thebasics {
+    background-color: var(--colorDarkblue);
+}
+.thealphabet {
+    background-color: color-mix(in srgb, var(--colorLavander) 40%, transparent);
+}
+.numbers {
+    background-color: color-mix(in srgb, var(--colorGreen) 40%, transparent);
+}
+.family {
+    background-color: color-mix(in srgb, var(--colorDarkblue) 40%, transparent);
+}
+.emotions {
+    background-color: color-mix(in srgb, var(--colorLavander) 40%, transparent);
+}
+.animals {
+    background-color: color-mix(in srgb, var(--colorGreen) 40%, transparent);
+}
+
+.lessons article img {
+    position: absolute;
+    top: -20px;
+    right: -10px;
+}
+
+.button-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2em;
+}
+
+/*---lessons---*/
+.nav-info h1 {
+    text-transform: uppercase;
+    letter-spacing: 5%;
+}
+.context-container {
+    padding: 2em 8em;
+    line-height: 1.6em;
+}
+.camera-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 4em;   
+}
+.camera {
+    background-color: var(--colorDarkblue);
+    border-radius: 20px;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.camera img {
+    border-radius: 15px;
+    height: 280px;
+    width: 280px;
+}
+.teachablemachine {
+    height: 280px;
+    width: 280px;
+    border-radius: 15px;
+    background-color: var(--colorCream);
+}
+.camera h2 {
+    color: var(--colorCream);
+}
+
+.continue-btn {
+    position: relative;
+    float: right;
+    top: 2em;
+    transform: rotate(-90deg);
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.continue-btn.enabled {
+    cursor: pointer;
+    opacity: 1;
+}
+
+.continue-btn.enabled:hover {
+    opacity: 0.8;
+}
+
+
+/*---progressbars---*/
+
+.progressbar-dashboard{
+    width: 100%;
+    height: 12px;
+    border-radius: 3px;
+    background-color: var(--colorCream);
+}
+.progressbar{
+    width: 100%;
+    height: 11.5px;
+    border: 1.5px solid #C1C74C; 
+    border-radius: 3px;
+    background-color: var(--colorCream);
+}
+.progressbar-fill {
+    background-color: var(--colorGreen);
+    width: 100px;
+    height: 10px;
+}

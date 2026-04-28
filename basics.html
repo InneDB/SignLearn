@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/style.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    
+    <title>The basics</title>
+</head>
+<body>
+    <div class="nav-info">
+        <h1>the basics</h1>
+        <p>On the left, you see an image of the hand gesture. Try to recreate it as accurately as possible.</p>
+    </div>
+
+    <div class="context-container">
+        <h3>Learning...</h3>
+        <div class="progressbar">
+            <div class="progressbar-fill"></div>
+        </div>
+        <p>Raise your hand up to the side of your forehead near your temple, keep your fingers together and your palm facing outward. Then move your hand outward and slightly away from your head, like a small wave starting from your forehead.</p>
+    
+        <div class="camera-wrapper">
+            <div class="camera">
+                <h2>Hello</h2>
+                <img src="images/sign-hello.png" alt="image sign-hello">
+            </div>
+
+            <div class="camera">
+                <h2>You</h2>
+                <div class="teachablemachine">
+                    <div id="webcam-container"></div>
+                </div>
+            </div>
+        </div>
+        <div class="continue-btn">
+            <img src="images/button-arrow.svg" alt="continue-button"> 
+        </div>
+         
+    </div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script src="app.js"></script>
+
+</body>
+</html>
