@@ -156,11 +156,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateLessonContent();
                 console.log(`Moved to lesson ${currentIndex + 1}: ${gestures[currentIndex].label}`);
             } else {
-                // All lessons completed needs fixing 
-                console.log('All lessons completed!');
+                // All gestures completed
+                console.log('All gestures completed!');
+                // Mark lesson as complete in localStorage
+                localStorage.setItem('lesson_basics_completed', 'true');
                 alert('Congratulations! You have completed all gestures!');
-                currentIndex = 0;
-                updateLessonContent();
+                // Redirect to index page
+                window.location.href = 'index.html';
             }
         }
     });

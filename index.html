@@ -24,7 +24,7 @@
                 <h2>the basics</h2>
                 <p>Basic words such as hello, goodbye, ...</p>
                 <div class="progressbar-dashboard">
-                    <div></div>
+                    <div class="progressbar-fill"></div>
                 </div>
             </article>
             </a>
@@ -69,7 +69,19 @@
         </div>
     </div>
 
-    
+    <script>
+        // Check if lesson is completed and update progressbar
+        document.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('lesson_basics_completed') === 'true') {
+                const basicsArticle = document.querySelector('.thebasics');
+                const progressbar = basicsArticle.querySelector('.progressbar-fill');
+                if (progressbar) {
+                    progressbar.style.width = '100%';
+                    progressbar.style.backgroundColor = '#C1C74C';
+                }
+            }
+        });
+    </script>
 
 </body>
 </html>
