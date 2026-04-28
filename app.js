@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Navigate to next lesson or page
             console.log('Continue button clicked!');
             // Add your navigation logic here
-            // window.location.href = 'next-page.html';
+            
         }
     });
 });
