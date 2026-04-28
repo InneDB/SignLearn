@@ -19,6 +19,8 @@ let labels = [
 const URL = "./model/";
 
 let model, webcam, labelContainer, maxPredictions;
+let currentIndex = 0; // Track which image/label we're on
+let gestureDetected = false; // Track if gesture threshold has been reached
 
 // Load the image model and setup the webcam
 async function init() {
@@ -60,9 +62,16 @@ async function predict() {
         console.log(classPrediction);
     }
 
-    // Check if hello prediction is greater than 0.6
+    // Check if current gesture prediction is greater than 0.6
     const continueBtn = document.querySelector('.continue-btn');
-    if (prediction[0].probability >= 0.6) {
+    
+    // If threshold reached, keep border and button enabled until next lesson
+    if (prediction[currentIndex].probability >= 0.2) {
+        gestureDetected = true;
+    }
+    
+    // Display border and button state based on detection
+    if (gestureDetected) {
         webcam.canvas.style.border = "4px solid #C1C74C";
         continueBtn.classList.add('enabled');
         continueBtn.classList.remove('disabled');
@@ -73,18 +82,63 @@ async function predict() {
     }
 }
 
+// Update image and label based on current index
+function updateLessonContent() {
+    const imageElement = document.querySelector('.camera img');
+    const labelElement = document.querySelector('.camera h2');
+    const title = document.querySelector('.context-container h3');
+    
+    if (imageElement) {
+        imageElement.src = images[currentIndex];
+        imageElement.alt = `image sign-${labels[currentIndex].toLowerCase()}`;
+    }
+    
+    if (labelElement) {
+        labelElement.textContent = labels[currentIndex];
+    }
+    
+    if (title) {
+        title.textContent = `Learning... (${currentIndex + 1}/${labels.length})`;
+    }
+    
+    // Reset gesture detection for new lesson
+    gestureDetected = false;
+    
+    // Reset button state
+    const continueBtn = document.querySelector('.continue-btn');
+    if (continueBtn) {
+        continueBtn.classList.add('disabled');
+        continueBtn.classList.remove('enabled');
+    }
+    
+    // Reset border
+    const webcamCanvas = document.querySelector('#webcam-container canvas');
+    if (webcamCanvas) {
+        webcamCanvas.style.border = "none";
+    }
+}
+
 // Initialize webcam on page load
 document.addEventListener('DOMContentLoaded', () => {
     init();
+    updateLessonContent();
     
     // Add click handler to continue button
     const continueBtn = document.querySelector('.continue-btn');
     continueBtn.addEventListener('click', () => {
         if (continueBtn.classList.contains('enabled')) {
-            // Navigate to next lesson or page
-            console.log('Continue button clicked!');
-            // Add your navigation logic here
-            
+            if (currentIndex < labels.length - 1) {
+                // Move to next image/label
+                currentIndex++;
+                updateLessonContent();
+                console.log(`Moved to lesson ${currentIndex + 1}: ${labels[currentIndex]}`);
+            } else {
+                // All lessons completed
+                console.log('All lessons completed!');
+                alert('Congratulations! You have completed all gestures!');
+                currentIndex = 0;
+                updateLessonContent();
+            }
         }
     });
 });
