@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 updateLessonContent();
                 console.log(`Moved to lesson ${currentIndex + 1}: ${labels[currentIndex]}`);
             } else {
-                // All lessons completed
+                // All lessons completed needs fixing 
                 console.log('All lessons completed!');
                 alert('Congratulations! You have completed all gestures!');
                 currentIndex = 0;
