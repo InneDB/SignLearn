@@ -141,29 +141,42 @@ function updateLessonContent() {
     }
 }
 
-// Initialize webcam on page load
+// Initialize page behavior on DOMContentLoaded
 document.addEventListener('DOMContentLoaded', () => {
-    init();
-    updateLessonContent();
-    
-    // Add click handler to continue button
-    const continueBtn = document.querySelector('.continue-btn');
-    continueBtn.addEventListener('click', () => {
-        if (continueBtn.classList.contains('enabled')) {
-            if (currentIndex < gestures.length - 1) {
-                // Move to next image/label
-                currentIndex++;
-                updateLessonContent();
-                console.log(`Moved to lesson ${currentIndex + 1}: ${gestures[currentIndex].label}`);
-            } else {
-                // All gestures completed
-                console.log('All gestures completed!');
-                // Mark lesson as complete in localStorage
-                localStorage.setItem('lesson_basics_completed', 'true');
-                alert('Congratulations! You have completed all gestures!');
-                // Redirect to index page
-                window.location.href = 'index.html';
-            }
+    // Index page progressbar initialization
+    const basicsProgressbar = document.querySelector('.thebasics .progressbar-fill');
+    if (basicsProgressbar) {
+        basicsProgressbar.style.width = '0%';
+        if (localStorage.getItem('lesson_basics_completed') === 'true') {
+            basicsProgressbar.style.width = '100%';
+            basicsProgressbar.style.backgroundColor = '#C1C74C';
         }
-    });
+    }
+
+    // Basics lesson page initialization
+    const webcamContainer = document.getElementById('webcam-container');
+    if (webcamContainer) {
+        init();
+        updateLessonContent();
+
+        const continueBtn = document.querySelector('.continue-btn');
+        if (continueBtn) {
+            continueBtn.addEventListener('click', () => {
+                if (continueBtn.classList.contains('enabled')) {
+                    if (currentIndex < gestures.length - 1) {
+                        // Move to next image/label
+                        currentIndex++;
+                        updateLessonContent();
+                        console.log(`Moved to lesson ${currentIndex + 1}: ${gestures[currentIndex].label}`);
+                    } else {
+                        // All gestures completed
+                        console.log('All gestures completed!');
+                        localStorage.setItem('lesson_basics_completed', 'true');
+                        alert('Congratulations! You have completed all gestures!');
+                        window.location.href = 'index.html';
+                    }
+                }
+            });
+        }
+    }
 });
