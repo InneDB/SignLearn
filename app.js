@@ -39,6 +39,7 @@ const URL = "./model/";
 let model, webcam, labelContainer, maxPredictions;
 let currentIndex = 0; // Track which image/label we're on
 let gestureDetected = false; // Track if gesture threshold has been reached
+let lessonCompleted = false; // Track whether the lesson flow has finished
 
 // Load the image model and setup the webcam
 async function init() {
@@ -163,6 +164,9 @@ function showFinishedMessage() {
     const finishedMessage = document.createElement('h4');
     finishedMessage.textContent = 'Finished✨';
     finishedMessage.className = 'finished-message';
+    finishedMessage.style.textAlign = 'center';
+    finishedMessage.style.marginTop = '3em';
+    finishedMessage.style.fontSize = '4em';
 
     const contextContainer = document.querySelector('.context-container');
     if (contextContainer) {
@@ -171,7 +175,14 @@ function showFinishedMessage() {
 
     const continueBtn = document.querySelector('.continue-btn');
     if (continueBtn) {
-        continueBtn.style.display = 'none';
+        lessonCompleted = true;
+        continueBtn.classList.add('enabled');
+        continueBtn.classList.remove('disabled');
+        continueBtn.style.display = '';
+        continueBtn.style.position = 'fixed';
+        continueBtn.style.bottom = '4em';
+        continueBtn.style.right = '4em';
+        continueBtn.style.top = 'auto';
     }
 }
 
@@ -197,6 +208,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (continueBtn) {
             continueBtn.addEventListener('click', () => {
                 if (continueBtn.classList.contains('enabled')) {
+                    if (lessonCompleted) {
+                        window.location.href = 'index.html';
+                        return;
+                    }
+
                     if (currentIndex < gestures.length - 1) {
                         // Move to next image/label
                         currentIndex++;
