@@ -139,6 +139,40 @@ function updateLessonContent() {
     if (webcamCanvas) {
         webcamCanvas.style.border = "none";
     }
+
+    // Update progress bar based on the current lesson index
+    updateProgressBar();
+}
+
+function updateProgressBar() {
+    const progressbarFill = document.querySelector('.progressbar-fill');
+    if (!progressbarFill) return;
+
+    const totalLessons = gestures.length;
+    const progress = totalLessons > 1 ? (currentIndex / (totalLessons - 1)) * 100 : 100;
+
+    progressbarFill.style.width = `${progress}%`;
+}
+
+function showFinishedMessage() {
+    const cameraWrapper = document.querySelector('.camera-wrapper');
+    if (cameraWrapper) {
+        cameraWrapper.remove();
+    }
+
+    const finishedMessage = document.createElement('h4');
+    finishedMessage.textContent = 'Finished✨';
+    finishedMessage.className = 'finished-message';
+
+    const contextContainer = document.querySelector('.context-container');
+    if (contextContainer) {
+        contextContainer.appendChild(finishedMessage);
+    }
+
+    const continueBtn = document.querySelector('.continue-btn');
+    if (continueBtn) {
+        continueBtn.style.display = 'none';
+    }
 }
 
 // Initialize page behavior on DOMContentLoaded
@@ -172,8 +206,11 @@ document.addEventListener('DOMContentLoaded', () => {
                         // All gestures completed
                         console.log('All gestures completed!');
                         localStorage.setItem('lesson_basics_completed', 'true');
-                        alert('Congratulations! You have completed all gestures!');
-                        window.location.href = 'index.html';
+                        const progressbarFill = document.querySelector('.progressbar-fill');
+                        if (progressbarFill) {
+                            progressbarFill.style.width = '100%';
+                        }
+                        showFinishedMessage();
                     }
                 }
             });
