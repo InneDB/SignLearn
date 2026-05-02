@@ -149,7 +149,7 @@ function updateProgressBar() {
     if (!progressbarFill) return;
 
     const totalLessons = gestures.length;
-    const progress = totalLessons > 1 ? (currentIndex / (totalLessons - 1)) * 100 : 100;
+    const progress = totalLessons > 0 ? (currentIndex / totalLessons) * 100 : 100;
 
     progressbarFill.style.width = `${progress}%`;
 }
