@@ -4,7 +4,7 @@ let gestures = [
         image: "images/sign-hello.png",
         label: "Hello",
         predictionIndex: 0,
-        threshold: 0.1
+        threshold: 0.8
     },
     {
         image: "images/sign-goodbye.png",
@@ -122,7 +122,8 @@ function updateLessonContent() {
     }
     
     if (title) {
-        title.textContent = `Learning... (${currentIndex + 1}/${gestures.length})`;
+        const titles = ["Learning...", "Keep going...", "Halfway there...", "Almost there.."];
+        title.textContent = titles[currentIndex];
     }
     
     // Reset gesture detection for new lesson
@@ -167,6 +168,9 @@ function showFinishedMessage() {
     finishedMessage.style.textAlign = 'center';
     finishedMessage.style.marginTop = '3em';
     finishedMessage.style.fontSize = '4em';
+
+    document.querySelector('.context-container h3').innerHTML = "Done";
+    document.querySelector('.context-container p').innerHTML = "";
 
     const contextContainer = document.querySelector('.context-container');
     if (contextContainer) {
