@@ -117,7 +117,7 @@ body {
 .camera {
     background-color: var(--colorDarkblue);
     border-radius: 20px;
-    padding: 1em;
+    padding-bottom: 2.5em;
     display: flex;
     flex-direction: column;
     align-items: center;
