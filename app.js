@@ -3,24 +3,28 @@ let gestures = [
     {
         image: "images/sign-hello.png",
         label: "Hello",
+        instruction: "Raise your hand up to the side of your forehead near your temple, keep your fingers together and your palm facing outward. Then move your hand outward and slightly away from your head, like a small wave starting from your forehead.",
         predictionIndex: 0,
         threshold: 0.8
     },
     {
         image: "images/sign-goodbye.png",
         label: "Goodbye",
+        instruction: "Raise your hand near the side of your head, around ear or cheek level. Keep your palm facing outward, away from your face. Hold your fingers together and straight, like a flat hand. Then bend your fingers slightly toward your palm and open them again, repeating a small motion.",
         predictionIndex: 1,
         threshold: 0.9
     },
     {
         image: "images/sign-please.png",
         label: "Please",
+        instruction: "Place your hand flat on the center of your chest, with your palm touching your chest. Keep your fingers together. Move your hand in a small circular motion on your chest. Repeat the gentle circular motion once or twice.",
         predictionIndex: 2,
         threshold: 0.9
     },
     {
         image: "images/sign-thankyou.png",
         label: "Thank you",
+        instruction: "Bring your hand up to your chin. Keep your fingers together and your palm facing to yourself. Lightly touch your chin area with your fingertips. Then move your hand forward and away from your face.",
         predictionIndex: 3,
         threshold: 0.9
     }
@@ -40,6 +44,8 @@ let model, webcam, labelContainer, maxPredictions;
 let currentIndex = 0; // Track which image/label we're on
 let gestureDetected = false; // Track if gesture threshold has been reached
 let lessonCompleted = false; // Track whether the lesson flow has finished
+let predictionReady = false; // Wait until the timer has completed before accepting gestures
+let predictionTimer = null;
 
 // Load the image model and setup the webcam
 async function init() {
@@ -73,6 +79,16 @@ async function loop() {
 
 // run the webcam image through the image model
 async function predict() {
+    const continueBtn = document.querySelector('.continue-btn');
+    if (!predictionReady) {
+        webcam.canvas.style.border = "none";
+        if (continueBtn) {
+            continueBtn.classList.add('disabled');
+            continueBtn.classList.remove('enabled');
+        }
+        return;
+    }
+
     // predict can take in an image, video or canvas html element
     const prediction = await model.predict(webcam.canvas);
     
@@ -86,9 +102,6 @@ async function predict() {
     }
 
     // Check if current gesture prediction meets the lesson's threshold
-    const continueBtn = document.querySelector('.continue-btn');
-    
-    // If threshold reached, keep border and button enabled until next lesson
     if (prediction[currentLesson.predictionIndex].probability >= currentLesson.threshold) {
         gestureDetected = true;
     }
@@ -96,12 +109,16 @@ async function predict() {
     // Display border and button state based on detection
     if (gestureDetected) {
         webcam.canvas.style.border = "4px solid #C1C74C";
-        continueBtn.classList.add('enabled');
-        continueBtn.classList.remove('disabled');
+        if (continueBtn) {
+            continueBtn.classList.add('enabled');
+            continueBtn.classList.remove('disabled');
+        }
     } else {
         webcam.canvas.style.border = "none";
-        continueBtn.classList.add('disabled');
-        continueBtn.classList.remove('enabled');
+        if (continueBtn) {
+            continueBtn.classList.add('disabled');
+            continueBtn.classList.remove('enabled');
+        }
     }
 }
 
@@ -125,6 +142,11 @@ function updateLessonContent() {
         const titles = ["Learning...", "Keep going...", "Halfway there...", "Almost there.."];
         title.textContent = titles[currentIndex];
     }
+
+    const instructionsElement = document.querySelector('.instructions');
+    if (instructionsElement) {
+        instructionsElement.innerHTML = currentLesson.instruction;
+    }
     
     // Reset gesture detection for new lesson
     gestureDetected = false;
@@ -142,8 +164,24 @@ function updateLessonContent() {
         webcamCanvas.style.border = "none";
     }
 
+    // Start the 5-second countdown before gesture detection begins
+    startPredictionDelay();
+
     // Update progress bar based on the current lesson index
     updateProgressBar();
+}
+
+function startPredictionDelay() {
+    predictionReady = false;
+    gestureDetected = false;
+
+    if (predictionTimer) {
+        clearTimeout(predictionTimer);
+    }
+
+    predictionTimer = setTimeout(() => {
+        predictionReady = true;
+    }, 5000);
 }
 
 function updateProgressBar() {
