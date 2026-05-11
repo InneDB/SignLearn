@@ -240,6 +240,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Unlock alphabet lesson if basics completed
+    if (localStorage.getItem('lesson_basics_completed') === 'true') {
+        const theAlphabet = document.querySelector('.thealphabet');
+        if (theAlphabet) {
+            theAlphabet.style.opacity = '1';
+            theAlphabet.style.backgroundColor = '#AA9BF8';
+            const lockImg = theAlphabet.querySelector('img');
+            if (lockImg) {
+                lockImg.style.display = 'none';
+            }
+        }
+    }
+
     // Basics lesson page initialization
     const webcamContainer = document.getElementById('webcam-container');
     if (webcamContainer) {
